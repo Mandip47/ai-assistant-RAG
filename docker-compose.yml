@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: ai-assistant-app
+    ports:
+      - "8080:8000" # host:8080 -> container:8000 (vLLM already owns host port 8000)
+    volumes:
+      - ./chroma-data:/data
+    environment:
+      # vllm_metal is assumed to already be running on your host machine (python -m vllm_metal.server).
+      - LLM_BASE_URL=http://host.docker.internal:8000/v1
+      - LLM_MODEL_NAME=mlx-community/Qwen2.5-3B-Instruct-4bit
+      - CHROMA_PERSIST_DIR=/data/chroma
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

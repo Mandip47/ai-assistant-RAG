@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+*.bin
+*.sqlite3
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables & secrets
+.env
+.env.*
+*.pem
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Vector stores / embeddings / data
+chroma_db/
+faiss_index/
+*.faiss
+*.pkl
+data/
+models/
+
+# Logs & caches
+*.log
+.cache/
+.pytest_cache/
+.mypy_cache/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
