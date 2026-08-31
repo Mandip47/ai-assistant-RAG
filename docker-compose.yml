@@ -5,13 +5,30 @@ services:
     build: .
     container_name: ai-assistant-app
     ports:
-      - "8080:8000" # host:8080 -> container:8000 (vLLM already owns host port 8000)
+      - "8080:8000" # host:8080 -> container:8000 (vllm_metal already owns host port 8000)
     volumes:
       - ./chroma-data:/data
+      - ./models:/models:ro
     environment:
-      # vllm_metal is assumed to already be running on your host machine (python -m vllm_metal.server).
-      - LLM_BASE_URL=http://host.docker.internal:8000/v1
-      - LLM_MODEL_NAME=mlx-community/Qwen2.5-3B-Instruct-4bit
+      # vllm_metal is assumed to already be running on your host machine.
+      - PRIMARY_LLM_BASE_URL=http://host.docker.internal:8000/v1
+      - PRIMARY_LLM_MODEL_NAME=mlx-community/Qwen2.5-3B-Instruct-4bit
+      # Optional second provider for automatic fallback. Leave blank to disable.
+      - FALLBACK_LLM_BASE_URL=
+      - FALLBACK_LLM_MODEL_NAME=
       - CHROMA_PERSIST_DIR=/data/chroma
+      - ONNX_MODEL_PATH=/models/resnet50_cifar10.onnx
+      - RATE_LIMIT=20/minute
     extra_hosts:
+      # Needed on Linux; Docker Desktop (Mac/Windows) supports host.docker.internal natively.
       - "host.docker.internal:host-gateway"
+
+  ui:
+    build: ./ui
+    container_name: ai-assistant-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://app:8000
+    depends_on:
+      - app

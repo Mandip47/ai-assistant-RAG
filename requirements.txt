@@ -1,4 +1,4 @@
-# Core Serving & API Framework (Linux Container)
+# Core Serving & API Framework
 fastapi>=0.110.0
 uvicorn[standard]>=0.28.0
 pydantic>=2.6.0
@@ -8,6 +8,14 @@ python-multipart==0.0.9
 openai>=1.14.0
 sentence-transformers>=2.5.0
 chromadb>=0.4.24
+
+# Image classification (ONNX)
+onnxruntime>=1.17.0
+pillow>=10.2.0
+
+# Reliability: retry + rate limiting
+tenacity>=8.2.0
+slowapi>=0.1.9
 
 # Utility & Data Handling
 numpy>=1.26.0

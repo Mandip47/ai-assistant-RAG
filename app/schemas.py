@@ -26,6 +26,12 @@ class IngestResponse(BaseModel):
     chunks_created: int
     collection: str
 
+class ClassifyResponse(BaseModel):
+    predicted_class: str
+    confidence: float
+    top_k: List[dict] = Field(default_factory=list)
+    error: Optional[str] = None
+
 
 # --- JSON schema handed to llama.cpp for constrained decoding of the ---
 # --- model's own turn (tool_call OR final_answer, never garbage text) ---
